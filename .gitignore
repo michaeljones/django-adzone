@@ -5,3 +5,4 @@
 *.swp
 venv
 demo
+/django_adzone.egg-info
