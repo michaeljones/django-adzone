@@ -31,7 +31,7 @@ class Advertiser(models.Model):
     company_name = models.CharField(
         verbose_name=_(u'Company Name'), max_length=255)
     website = models.URLField(verbose_name=_(u'Company Site'))
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _(u'Ad Provider')
@@ -92,12 +92,13 @@ class AdBase(models.Model):
                                         default=MAX_DATETIME)
 
     # Relations
-    advertiser = models.ForeignKey(Advertiser, verbose_name=_("Ad Provider"))
+    advertiser = models.ForeignKey(Advertiser, verbose_name=_("Ad Provider"), on_delete=models.CASCADE)
     category = models.ForeignKey(AdCategory,
                                  verbose_name=_("Category"),
                                  blank=True,
-                                 null=True)
-    zone = models.ForeignKey(AdZone, verbose_name=_("Zone"))
+                                 null=True,
+                                 on_delete=models.CASCADE)
+    zone = models.ForeignKey(AdZone, verbose_name=_("Zone"), on_delete=models.CASCADE)
 
     # Our Custom Manager
     objects = AdManager()
@@ -124,7 +125,7 @@ class AdImpression(models.Model):
         verbose_name=_(u'When'), auto_now_add=True)
     source_ip = models.GenericIPAddressField(
         verbose_name=_(u'Who'), null=True, blank=True)
-    ad = models.ForeignKey(AdBase)
+    ad = models.ForeignKey(AdBase, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('Ad Impression')
@@ -139,7 +140,7 @@ class AdClick(models.Model):
         verbose_name=_(u'When'), auto_now_add=True)
     source_ip = models.GenericIPAddressField(
         verbose_name=_(u'Who'), null=True, blank=True)
-    ad = models.ForeignKey(AdBase)
+    ad = models.ForeignKey(AdBase, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('Ad Click')
